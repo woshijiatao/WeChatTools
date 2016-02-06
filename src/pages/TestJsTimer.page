@@ -1,0 +1,41 @@
+<apex:page showHeader="false" sidebar="false" standardStylesheets="false">
+    <apex:includeScript value="{!URLFOR($Resource.JqueryAndBootstrap, 'js/jquery-2.1.4.min.js')}" />
+    <!-- <apex:includeScript value="{{!URLFOR($Resource.JqueryAndBootstrap, 'js/bootstrap.min.js')}" /> -->
+    <apex:stylesheet value="{!URLFOR($Resource.JqueryAndBootstrap, 'css/bootstrap.min.css')}" />
+    <apex:form id="apexform">
+        <apex:commandLink rerender="apexform">
+            <font id="sendE" size="2px">获取验证码</font>
+        </apex:commandLink>
+    </apex:form>
+    <!-- <input type="submit" id="sendE" value="tip"/> -->
+    <script type="text/javascript">
+	    var wait = 60;
+	    $(document).ready(function() {
+
+	        $("#sendE").click(function() {
+	            time();
+	        });
+
+	    });
+
+	    function time() {
+	        var s = $("#sendE");
+	        var p = s.parent();
+
+	        if (wait == 0) {
+	            // p.attr("disabled");
+	            s.text('点击获取参数');
+	         
+	            wait = 60;
+	        } else {
+	            p.attr("disabled", "disabled");
+	            s.text(wait + "秒后重新获取验证码");
+	            wait--;
+	            setTimeout(function() {
+                    time();
+                },
+                1000);
+	        }
+	    }
+    </script>
+</apex:page>

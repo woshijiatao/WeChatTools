@@ -1,0 +1,10 @@
+.tm_properties
+*.sublime-project
+*.sublime-workspace
+*.sublime-settings
+config/
+src/staticresources/
+resource-bundles/
+*.log
+debug/
+deploy/
