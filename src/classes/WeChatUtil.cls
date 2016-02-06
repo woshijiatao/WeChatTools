@@ -1,8 +1,22 @@
 public class WeChatUtil 
 {	
-    private static Final String END_POINT = 'https://georgejt-developer-edition.ap2.force.com/services/apexrest/testRestApi';
     private static Final String ACCESS_TOKEN_URL = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=';
-        
+    private static Final String GET_WECHAT_IP_URL = 'https://api.weixin.qq.com/cgi-bin/getcallbackip?access_token=';
+
+    public static List<String> getWeChatServiceIP()
+    {
+        String accessToken = getAccessToken();
+
+        HttpResponse res = new HttpResponse();
+        HttpRequest req = new HttpRequest();
+        req.setEndpoint(GET_WECHAT_IP_URL + accessToken);
+        req.setMethod('GET');
+        res = (new Http()).send(req);
+
+        IPListObj ipListObject = (IPListObj)JSON.deserializeStrict(res.getBody(), IPListObj.class);
+        return ipListObject.ip_list;
+    }
+
     public static String getAccessToken()
     {
         List<String> appList = getAppIdAndAppSecret();
@@ -11,11 +25,11 @@ public class WeChatUtil
     	endPoint += appList[0] + '&secret=' + appList[1];
         
         HttpResponse res = new HttpResponse();
-        HttpRequest request = new HttpRequest();
-        request.setEndpoint(endPoint);
-        request.setMethod('GET');
-        res = (new Http()).send(request);
-        
+        HttpRequest req = new HttpRequest();
+        req.setEndpoint(endPoint);
+        req.setMethod('GET');
+        res = (new Http()).send(req);
+
         AccessTokenObj accessToken = (AccessTokenObj)JSON.deserializeStrict(res.getBody(), AccessTokenObj.class);
         return accessToken.access_token;
     }
@@ -38,10 +52,15 @@ public class WeChatUtil
         String appSecret = weChatSetting.App_Secret__c;
         return new List<String> {appId, appSecret};
     }
-    
+
     public class AccessTokenObj
     {
         public String access_token { get; set; }
         public Integer expires_in { get; set; }
+    }
+
+    public class IPListObj
+    {
+        public List<String> ip_list { get; set; }
     }
 }
