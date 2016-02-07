@@ -1,3 +1,6 @@
+/*
+    WeChat Getting Start Api.
+*/
 public class WeChatUtil 
 {	
     private static Final String ACCESS_TOKEN_URL = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=';
